@@ -1,13 +1,24 @@
-# EMVco QR code
+emv-qrcode
+===========
 
-[![CircleCI](https://circleci.com/gh/dongri/emv-qrcode.svg?style=svg)](https://circleci.com/gh/dongri/emv-qrcode)
+[![Go Report Card](https://goreportcard.com/badge/github.com/100x-fi/emv-qrcode)](https://goreportcard.com/report/github.com/100x-fi/emv-qrcode)
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/dongri/emv-qrcode)](https://goreportcard.com/report/github.com/dongri/emv-qrcode)
+A package for encode and decode EMVCo QR standard which widely adopted by payment networks around the globe.
 
-### Documents
-https://github.com/dongri/emv-qrcode-doc
+#### Installation
+Make sure that Go is installed on your computer.
+Type the following command in your terminal:
+```
+go get github.com/100x-fi/emv-qrcode
+```
+After the command above is executed, the package is ready to use.
+#### Import package in your project
+Add the following line your `*.go` file:
+```go
+import "github.com/100x-fi/emv-qrcode"
+```
 
-### MPM (Merchant Presented Mode)
+#### Example for Merchant Presented Mode
 ```go
 package main
 
@@ -73,7 +84,7 @@ func main() {
 }
 ```
 
-### CPM (Consumer Presented Mode)
+#### Example for Consumer Presented Mode
 ```go
 package main
 
@@ -118,3 +129,7 @@ func main() {
 	// hQVDUFYwMWETTwegAAAAVVVVUAhQcm9kdWN0MWETTwegAAAAZmZmUAhQcm9kdWN0MmJJWggSNFZ4kBI0WF8gDkNBUkRIT0xERVIvRU1WXy0IcnVlc2RlZW5kIZ8QBwYBCgMAAACfJghYT9OF+iNLzJ82AgABnzcEbVjvEw==
 }
 ```
+
+## License
+The emv-qrcode library is licensed under the MIT License
+
