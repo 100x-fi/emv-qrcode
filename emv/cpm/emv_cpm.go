@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -137,22 +136,20 @@ func (c *EMVQR) GeneratePayload() (string, error) {
 	return s, nil
 }
 
+// Decode ...
 func (c *EMVQR) Decode(payload string) (*EMVQR, error) {
 	s, err := base64.StdEncoding.DecodeString(payload)
 	if err != nil {
 		return nil, err
 	}
-	log.Println(string(s))
 	encoded := hex.EncodeToString(s)
-	log.Println(encoded)
 	emvqr := new(EMVQR)
 	p := NewParser(encoded)
 	idWordCount := IDWordCount
 	for p.Next(idWordCount) {
 		id := strings.ToUpper(string(p.ID(idWordCount)))
-		length := p.ValueLength(idWordCount)
+		// length := p.ValueLength(idWordCount)
 		hexValue := p.Value(idWordCount)
-		log.Printf("[Payload] id: %v, length: %v, hexValue: %v", id, length, hexValue)
 		switch id {
 		case IDPayloadFormatIndicator:
 			value, err := fromHex(hexValue)
@@ -187,13 +184,12 @@ func (c *EMVQR) ParseApplication(hexString string) (*ApplicationTemplate, error)
 	for p.Next(idWordCount) {
 		idWordCount = IDWordCount
 		id := strings.ToUpper(string(p.ID(idWordCount)))
-		length := p.ValueLength(idWordCount)
+		// length := p.ValueLength(idWordCount)
 		hexVal := p.Value(idWordCount)
 		value, err := fromHex(hexVal)
 		if err != nil {
 			return nil, err
 		}
-		log.Printf("[ID length 2] id: %v, length: %v, hexValue: %v, value: %v", id, length, hexVal, value)
 		switch id {
 		case TagApplicationDefinitionFileName:
 			applicationTemplate.DataApplicationDefinitionFileName = value
@@ -223,14 +219,13 @@ func (c *EMVQR) ParseApplication(hexString string) (*ApplicationTemplate, error)
 				}
 			} else {
 				idWordCount = 4
-				id = strings.ToUpper(string(p.ID(idWordCount)))
-				length = p.ValueLength(idWordCount)
+				// id = strings.ToUpper(string(p.ID(idWordCount)))
+				//length = p.ValueLength(idWordCount)
 				hexVal = p.Value(idWordCount)
 				value, err = fromHex(hexVal)
 				if err != nil {
 					return nil, err
 				}
-				log.Printf("[ID length 4] id: %v, length: %v, hexValue: %v, value: %v", id, length, hexVal, value)
 				switch id {
 				case TagCardholderName:
 					applicationTemplate.DataCardholderName = value
@@ -270,6 +265,7 @@ func (c *EMVQR) ParseApplication(hexString string) (*ApplicationTemplate, error)
 	return applicationTemplate, nil
 }
 
+// ParseCommonDataTemplate ...
 func (c *EMVQR) ParseCommonDataTemplate(hexString string) (*CommonDataTemplate, error) {
 	commonDataTemplate := new(CommonDataTemplate)
 	p := NewParser(hexString)
@@ -277,13 +273,12 @@ func (c *EMVQR) ParseCommonDataTemplate(hexString string) (*CommonDataTemplate, 
 	for p.Next(idWordCount) {
 		idWordCount = IDWordCount
 		id := strings.ToUpper(string(p.ID(idWordCount)))
-		length := p.ValueLength(idWordCount)
+		// length := p.ValueLength(idWordCount)
 		hexVal := p.Value(idWordCount)
 		value, err := fromHex(hexVal)
 		if err != nil {
 			return nil, err
 		}
-		log.Printf("[ID length 2] id: %v, length: %v, hexValue: %v, value: %v", id, length, hexVal, value)
 		switch id {
 		case TagApplicationDefinitionFileName:
 			commonDataTemplate.DataApplicationDefinitionFileName = value
@@ -314,13 +309,12 @@ func (c *EMVQR) ParseCommonDataTemplate(hexString string) (*CommonDataTemplate, 
 			} else {
 				idWordCount = 4
 				id = strings.ToUpper(string(p.ID(idWordCount)))
-				length = p.ValueLength(idWordCount)
+				//length = p.ValueLength(idWordCount)
 				hexVal = p.Value(idWordCount)
 				value, err = fromHex(hexVal)
 				if err != nil {
 					return nil, err
 				}
-				log.Printf("[ID length 4] id: %v, length: %v, hexValue: %v, value: %v", id, length, hexVal, value)
 				switch id {
 				case TagCardholderName:
 					commonDataTemplate.DataCardholderName = value
@@ -368,13 +362,12 @@ func (c *EMVQR) ParseBERTLV(hexString string) (*BERTLV, error) {
 	for p.Next(idWordCount) {
 		idWordCount = IDWordCount
 		id := strings.ToUpper(string(p.ID(idWordCount)))
-		length := p.ValueLength(idWordCount)
+		// length := p.ValueLength(idWordCount)
 		hexVal := p.Value(idWordCount)
 		value, err := fromHex(hexVal)
 		if err != nil {
 			return nil, err
 		}
-		log.Printf("[ID length 2] id: %v, length: %v, hexValue: %v, value: %v", id, length, hexVal, value)
 		switch id {
 		case TagApplicationDefinitionFileName:
 			bertlv.DataApplicationDefinitionFileName = value
@@ -394,13 +387,12 @@ func (c *EMVQR) ParseBERTLV(hexString string) (*BERTLV, error) {
 			} else {
 				idWordCount = 4
 				id = strings.ToUpper(string(p.ID(idWordCount)))
-				length = p.ValueLength(idWordCount)
+				//length = p.ValueLength(idWordCount)
 				hexVal = p.Value(idWordCount)
 				value, err = fromHex(hexVal)
 				if err != nil {
 					return nil, err
 				}
-				log.Printf("[ID length 4] id: %v, length: %v, hexValue: %v, value: %v", id, length, hexVal, value)
 				switch id {
 				case TagCardholderName:
 					bertlv.DataCardholderName = value

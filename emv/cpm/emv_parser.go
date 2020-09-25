@@ -3,7 +3,6 @@ package cpm
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strconv"
 	"unicode/utf8"
 )
@@ -62,12 +61,10 @@ type Parser struct {
 
 // NewParser ...
 func NewParser(payload string) *Parser {
-	a := []rune(payload)
-	log.Printf("source length %v", len(a))
 	return &Parser{
 		current: -1,
 		max:     int64(utf8.RuneCountInString(payload)),
-		source:  []rune(payload),
+		source:  []rune([]rune(payload)),
 		err:     nil,
 	}
 }
