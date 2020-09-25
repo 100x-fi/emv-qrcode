@@ -508,5 +508,8 @@ func formattingTemplate(t BERTLV) string {
 	if t.DataApplicationTransactionCounter != "" {
 		template += format(TagApplicationTransactionCounter, t.DataApplicationTransactionCounter)
 	}
+	if t.DataUnpredictableNumber != "" {
+		template += format(TagUnpredictableNumber, t.DataUnpredictableNumber)
+	}
 	return template
 }
